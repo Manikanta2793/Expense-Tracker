@@ -118,6 +118,7 @@ const App = () => {
     try {
 
       await deleteExpense(id)
+      setExpenses((prev) => prev.filter((e) => e._id !== id));
 
     } catch (error) {
       console.error("Create error:", error)
