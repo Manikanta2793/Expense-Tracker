@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BaseUrl = 'http://localhost:3000/api/v2';
+const BaseUrl = 'https://expense-tracker-backend-6-ttwp.onrender.com/api/v2';
 
 const api = axios.create({baseURL:BaseUrl, timeout:3000});
 
