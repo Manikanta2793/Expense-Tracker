@@ -1,53 +1,46 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const expenseSchema = new mongoose.Schema({
-
-    description:{
-        type:String,
-        
-        trim:true,
-        maxlength:100
+const expenseSchema = new mongoose.Schema(
+  {
+    description: {
+      type: String,
+      trim: true,
+      maxlength: 100
     },
-    amount:{
-        type:Number,
-        required:true,
-        min:0.01
-
+    amount: {
+      type: Number,
+      required: true,
+      min: 0.01
     },
-    category:{
-        type:String,
-        required:true,
-        enum:[
-            "Food",
-            "Transportation",
-            "Shopping",
-            "Bills",
-            "Healthcare",
-            "Other"
-
-        ]
+    category: {
+      type: String,
+      required: true,
+      enum: ["Food", "Transportation", "Shopping", "Bills", "Healthcare", "Other"]
     },
-    date:{
-        type:Date,
-        default:Date.now
+    date: {
+      type: Date,
+      default: Date.now
     },
-    notes:{
-        type:String,
-        trim:true,
-        maxlength:500
+    notes: {
+      type: String,
+      trim: true,
+      maxlength: 500
     },
-    
- 
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true
+    }
+  },
+  { timestamps: true }
+);
 
+expenseSchema.pre("save", function (next) {
+  if (this.amount) this.amount = Math.round(this.amount * 100) / 100;
+  next();
+});
 
+const Expense = mongoose.model("CopyExpense", expenseSchema);
 
-
-
-},{timestamp:true});
-expenseSchema.pre("save",function(next){
-    if(this.amount)this.amount = Math.round(this.amount*100)/100;
-    next();
-
-})
-const Expense = mongoose.model("CopyExpense",expenseSchema);
- export {Expense};
+export { Expense };
